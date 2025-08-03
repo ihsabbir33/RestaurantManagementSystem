@@ -22,7 +22,4 @@ class FeedbackManager:
 
     def get_recent_feedbacks(self, count=5):
         return sorted(self.feedbacks, key=lambda x: x['timestamp'], reverse=True)[:count]
-
-    def get_recent_ratings(self):
-        return sorted(self.feedbacks, key=lambda x: x['rating'], reverse=True)
     
