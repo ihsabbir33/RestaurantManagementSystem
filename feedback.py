@@ -12,4 +12,17 @@ class FeedbackManager:
             'comments': comments,
             'timestamp': datetime.now()
         }
- rn sorted(self.feedbacks, key=lambda x: x['timestamp'], reverse=True)[:count]
+        self.feedbacks.append(feedback)
+        return feedback
+
+    def get_average_rating(self):
+        if not self.feedbacks:
+            return 0
+        return sum(f['rating'] for f in self.feedbacks) / len(self.feedbacks)
+
+    def get_recent_feedbacks(self, count=5):
+        return sorted(self.feedbacks, key=lambda x: x['timestamp'], reverse=True)[:count]
+
+    def get_recent_ratings(self):
+        return sorted(self.feedbacks, key=lambda x: x['rating'], reverse=True)
+    
