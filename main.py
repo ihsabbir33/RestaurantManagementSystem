@@ -2,11 +2,11 @@ from restaurant import Restaurant
 
 res = Restaurant("Xenon Restaurant")
 
-# Sample Menu
+# Sample Menu with Inheritance and Polymorphism
 res.add_menu_item(1, "Burger", 120, "Fast Food")
-res.add_menu_item(2, "Pizza", 300, "Fast Food")
+res.add_menu_item(2, "Pizza", 300, "Fast Food", discount=10)  # DiscountedItem
 res.add_menu_item(3, "Coffee", 80, "Beverage")
-res.add_menu_item(4, "Rice & Chicken", 180, "Main Course")
+res.add_menu_item(4, "Rice & Chicken", 180, "Main Course", discount=15)  # DiscountedItem
 
 while True:
     print("\n--- Welcome to Xenon Restaurant ---")
