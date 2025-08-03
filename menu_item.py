@@ -6,4 +6,4 @@ class MenuItem:
         self.category = category
 
     def __str__(self):
-        return f"[{self.item_id}] {self.name} - {self.price} TK ({self.category})"
+        return f"{self.item_id}. {self.name} - ₹{self.price} ({self.category})"
