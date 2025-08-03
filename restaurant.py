@@ -1,4 +1,4 @@
-from menu_item import MenuItem, DiscountedItem  # Inherited class imported
+from menu_item import MenuItem
 from order import Order
 
 class Restaurant:
@@ -7,12 +7,8 @@ class Restaurant:
         self.menu = []
         self.orders = []
 
-    def add_menu_item(self, item_id, name, price, category, discount=0):
-        # Using Inheritance: add normal or discounted item
-        if discount > 0:
-            item = DiscountedItem(item_id, name, price, category, discount)
-        else:
-            item = MenuItem(item_id, name, price, category)
+    def add_menu_item(self, item_id, name, price, category):
+        item = MenuItem(item_id, name, price, category)
         self.menu.append(item)
 
     def show_menu(self, sort_by=None):
@@ -23,10 +19,10 @@ class Restaurant:
             items = sorted(self.menu, key=lambda x: x.price, reverse=True)
 
         for item in items:
-            print(item)  # Polymorphism: calls correct __str__ based on object type
+            print(item)
 
     def place_order(self, item_ids):
-        items = [item for item in self.menu if item.item_id in item_ids]
+        items = [item for item_id in item_ids for item in self.menu if item.item_id == item_id]
         if not items:
             print("❌ Invalid item IDs.")
             return None

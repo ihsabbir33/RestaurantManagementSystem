@@ -1,4 +1,5 @@
 import datetime
+from collections import Counter
 
 class Order:
     order_counter = 1
@@ -9,13 +10,32 @@ class Order:
         self.items = items
         self.timestamp = datetime.datetime.now()
 
-    def total_price(self):
-        return sum(item.price if not hasattr(item, 'get_discounted_price') else item.get_discounted_price() for item in self.items)
+    def calculate_totals(self):
+        original_total = sum(item.price for item in self.items)
+        discounted_total = original_total
+
+        # Rule 1: Same item 5+ times → 15% discount
+        item_counts = Counter(item.name for item in self.items)
+        for name, count in item_counts.items():
+            if count >= 5:
+                item_price = next(item.price for item in self.items if item.name == name)
+                discounted_total -= (item_price * count) * 0.15
+
+        # Rule 2: Total > 500 → 10% overall discount
+        if discounted_total > 500:
+            discounted_total *= 0.90
+
+        return original_total, discounted_total
 
     def __str__(self):
         item_list = "\n".join([
-            f"- {item.name}: {item.get_discounted_price() if hasattr(item, 'get_discounted_price') else item.price} TK"
-            for item in self.items
+            f"- {item.name}: {item.price} TK" for item in self.items
         ])
-        return f"Order ID: {self.order_id}\nTime: {self.timestamp.strftime('%Y-%m-%d %H:%M:%S')}\nItems:\n{item_list}\nTotal: {self.total_price():.2f} TK"
-
+        original_total, discounted_total = self.calculate_totals()
+        return (
+            f"Order ID: {self.order_id}\n"
+            f"Time: {self.timestamp.strftime('%Y-%m-%d %H:%M:%S')}\n"
+            f"Items:\n{item_list}\n"
+            f"Total (before discount): {original_total:.2f} TK\n"
+            f"Total (after discount): {discounted_total:.2f} TK"
+        )
